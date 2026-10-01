@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Secure checkout | Pragmatic VFX</title>
+  <style>body{font:18px system-ui;max-width:720px;margin:64px auto;padding:24px;background:#080b0d;color:#eef4f5;line-height:1.6}a{color:#b6e3f4}#status{padding:20px;background:#172126;border-radius:8px}.links{display:flex;gap:20px;flex-wrap:wrap}footer{margin-top:40px;font-size:14px}</style>
+</head>
+<body>
+  <h1>Pragmatic VFX secure checkout</h1>
+  <p id="status" role="status">Loading secure checkout…</p>
+  <p>Paddle shows your total, applicable taxes and renewal terms before payment. Activation and downloads become available after your payment has been verified.</p>
+  <div class="links"><a href="https://operators.pragmatic-vfx.com/#pricing">Operators</a><a href="https://workflow.pragmatic-vfx.com/#pricing">Workflow</a><a href="https://suite.pragmatic-vfx.com/#pricing">Suite</a><a href="https://license.pragmatic-vfx.com/account">Your account</a></div>
+  <footer><a href="https://pragmatic-vfx.com/terms/">Terms</a> · <a href="https://pragmatic-vfx.com/privacy/">Privacy</a> · <a href="https://pragmatic-vfx.com/refund/">Refund</a> · <a href="mailto:animatrix2k7@gmail.com">Contact</a></footer>
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script>
+  (()=>{
+    'use strict';
+    const status=document.getElementById('status');
+    if(typeof Paddle==='undefined'){status.textContent='Secure checkout could not load. Please reload this page.';return;}
+    try{
+      Paddle.Initialize({token:'live_24e11872a386ffdd7d9828c5db3',eventCallback:event=>{
+        if(event.name==='checkout.completed')status.textContent='Thank you. Your payment will be verified before activation details are provided. Sign in to your account for your licenses.';
+        else if(event.name==='checkout.closed')status.textContent='Checkout closed. Reopen your payment link to resume.';
+        else if(event.name==='checkout.error')status.textContent='Checkout could not complete. Please reopen your payment link or contact support.';
+      }});
+      status.textContent=new URLSearchParams(location.search).has('_ptxn')?'Opening your secure payment link…':'Use your payment link to open checkout, or visit a product page for availability and pricing.';
+    }catch{status.textContent='Secure checkout could not initialize. Please reload or contact support.';}
+  })();
+  </script>
+</body>
+</html>
